@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """Defines unittests for models/square.py."""
+import os
 import unittest
 from models.base import Base
 from models.rectangle import Rectangle
@@ -66,16 +67,11 @@ class TestSquare_methods(unittest.TestCase):
         self.assertDictEqual(correct, s.to_dictionary())
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 class TestSquare_save_and_load(unittest.TestCase):
     """Unittests for testing save_to_file and load_from_file of Square."""
 
     @classmethod
     def tearDown(self):
-        import os
         try:
             os.remove("Square.json")
         except IOError:
