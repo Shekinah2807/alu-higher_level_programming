@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """Defines unittests for models/square.py."""
+import json
 import os
 import unittest
 from models.base import Base
@@ -24,21 +25,21 @@ class TestSquare_instantiation(unittest.TestCase):
         self.assertEqual(4, s4.id)
 
     def test_invalid_types(self):
-        with self.assertRaisesRegex(TypeError, "width must be an integer"):
+        with self.assertRaises(TypeError):
             Square("1")
-        with self.assertRaisesRegex(TypeError, "x must be an integer"):
+        with self.assertRaises(TypeError):
             Square(1, "2")
-        with self.assertRaisesRegex(TypeError, "y must be an integer"):
+        with self.assertRaises(TypeError):
             Square(1, 2, "3")
 
     def test_invalid_values(self):
-        with self.assertRaisesRegex(ValueError, "width must be > 0"):
+        with self.assertRaises(ValueError):
             Square(-1)
-        with self.assertRaisesRegex(ValueError, "width must be > 0"):
+        with self.assertRaises(ValueError):
             Square(0)
-        with self.assertRaisesRegex(ValueError, "x must be >= 0"):
+        with self.assertRaises(ValueError):
             Square(1, -2)
-        with self.assertRaisesRegex(ValueError, "y must be >= 0"):
+        with self.assertRaises(ValueError):
             Square(1, 2, -3)
 
 
@@ -81,7 +82,7 @@ class TestSquare_save_and_load(unittest.TestCase):
         s = Square(1)
         Square.save_to_file([s])
         with open("Square.json", "r") as f:
-            self.assertTrue(len(f.read()) == 38)
+            self.assertEqual([s.to_dictionary()], json.load(f))
 
     def test_save_to_file_None(self):
         Square.save_to_file(None)

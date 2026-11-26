@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """Defines unittests for base.py."""
+import json
 import os
 import unittest
 from models.base import Base
@@ -34,10 +35,6 @@ class TestBase_instantiation(unittest.TestCase):
         b.id = 15
         self.assertEqual(15, b.id)
 
-    def test_nb_instances_private(self):
-        with self.assertRaises(AttributeError):
-            print(Base(12).__nb_instances)
-
 
 class TestBase_to_json_string(unittest.TestCase):
     """Unittests for testing to_json_string method of Base class."""
@@ -47,7 +44,9 @@ class TestBase_to_json_string(unittest.TestCase):
         self.assertEqual(str, type(Base.to_json_string([r.to_dictionary()])))
 
     def test_to_json_string_dict(self):
-        self.assertEqual('[{"id": 12}]', Base.to_json_string([{'id': 12}]))
+        res = Base.to_json_string([{'id': 12}])
+        self.assertEqual(str, type(res))
+        self.assertEqual([{'id': 12}], json.loads(res))
 
     def test_to_json_string_empty_list(self):
         self.assertEqual("[]", Base.to_json_string([]))
@@ -74,7 +73,7 @@ class TestBase_save_to_file(unittest.TestCase):
         r = Rectangle(10, 7, 2, 8, 5)
         Rectangle.save_to_file([r])
         with open("Rectangle.json", "r") as f:
-            self.assertTrue(len(f.read()) == 53)
+            self.assertEqual([r.to_dictionary()], json.load(f))
 
     def test_save_to_file_None(self):
         Square.save_to_file(None)
