@@ -17,11 +17,26 @@ class TestSquare_instantiation(unittest.TestCase):
 
     def test_args(self):
         s1 = Square(1)
+        self.assertEqual(1, s1.size)
+        self.assertEqual(0, s1.x)
+        self.assertEqual(0, s1.y)
+
         s2 = Square(1, 2)
-        s3 = Square(1, 2, 3)
-        s4 = Square(1, 2, 3, 4)
+        self.assertEqual(1, s2.size)
+        self.assertEqual(2, s2.x)
+        self.assertEqual(0, s2.y)
         self.assertEqual(s1.id, s2.id - 1)
+
+        s3 = Square(1, 2, 3)
+        self.assertEqual(1, s3.size)
+        self.assertEqual(2, s3.x)
+        self.assertEqual(3, s3.y)
         self.assertEqual(s2.id, s3.id - 1)
+
+        s4 = Square(1, 2, 3, 4)
+        self.assertEqual(1, s4.size)
+        self.assertEqual(2, s4.x)
+        self.assertEqual(3, s4.y)
         self.assertEqual(4, s4.id)
 
     def test_invalid_types(self):
